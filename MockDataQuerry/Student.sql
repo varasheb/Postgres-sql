@@ -1,0 +1,10 @@
+insert into student (student_id, first_name, last_name, date_of_birth, email, course_id) values (1, 'Dulcia', 'L''Archer', '5/15/2015', 'dlarcher0@comsenz.com', 103);
+insert into student (student_id, first_name, last_name, date_of_birth, email, course_id) values (2, 'Guenevere', 'Childrens', '7/10/2001', 'gchildrens1@kickstarter.com', 101);
+insert into student (student_id, first_name, last_name, date_of_birth, email, course_id) values (3, 'Frederique', 'Titchard', '4/25/1998', 'ftitchard2@dell.com', 102);
+insert into student (student_id, first_name, last_name, date_of_birth, email, course_id) values (4, 'Carleton', 'Ponnsett', '2/4/2008', 'cponnsett3@gnu.org', 103);
+insert into student (student_id, first_name, last_name, date_of_birth, email, course_id) values (5, 'Helen', 'Keme', '6/3/1999', 'hkeme4@scribd.com', 102);
+insert into student (student_id, first_name, last_name, date_of_birth, email, course_id) values (6, 'Malva', 'Sheivels', '6/19/2013', 'msheivels5@comsenz.com', 100);
+insert into student (student_id, first_name, last_name, date_of_birth, email, course_id) values (7, 'Gordie', 'Josefson', '3/2/2001', 'gjosefson6@upenn.edu', 102);
+insert into student (student_id, first_name, last_name, date_of_birth, email, course_id) values (8, 'Janot', 'Goalby', '2/8/2005', 'jgoalby7@sphinn.com', 103);
+insert into student (student_id, first_name, last_name, date_of_birth, email, course_id) values (9, 'Bartholomeo', 'Fawdrie', '5/1/2020', 'bfawdrie8@loc.gov', 103);
+insert into student (student_id, first_name, last_name, date_of_birth, email, course_id) values (10, 'Deane', 'Masurel', '9/6/2009', 'dmasurel9@cornell.edu', 103);

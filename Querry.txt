@@ -1,0 +1,236 @@
+lucky@lucky-Inspiron-5584:~$ psql -U postgres -d mydatabase -h localhost -p 5432
+Password for user postgres: 
+psql (14.11 (Ubuntu 14.11-0ubuntu0.22.04.1))
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+mydatabase=# \dt
+          List of relations
+ Schema |  Name   | Type  |  Owner   
+--------+---------+-------+----------
+ public | notes   | table | postgres
+ public | student | table | postgres
+ public | users   | table | postgres
+(3 rows)
+
+mydatabase=# \d student
+mydatabase=# select * from student
+mydatabase-# ;
+ student_id | first_name | last_name | date_of_birth |      email       
+------------+------------+-----------+---------------+------------------
+          1 | Virat      | Koli      | 2000-01-15    | virat@gmail.com
+          2 | Rohit      | Shrma     | 1999-05-22    | rohit@google.com
+(2 rows)
+
+mydatabase=# CREATE TABLE course (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(255),
+    instructor VARCHAR(255),
+    credits INT
+);
+CREATE TABLE
+mydatabase=# \d student
+                                           Table "public.student"
+    Column     |          Type          | Collation | Nullable |                   Default                   
+---------------+------------------------+-----------+----------+---------------------------------------------
+ student_id    | integer                |           | not null | nextval('student_student_id_seq'::regclass)
+ first_name    | character varying(50)  |           | not null | 
+ last_name     | character varying(50)  |           | not null | 
+ date_of_birth | date                   |           |          | 
+ email         | character varying(100) |           | not null | 
+Indexes:
+    "student_pkey" PRIMARY KEY, btree (student_id)
+    "student_email_key" UNIQUE CONSTRAINT, btree (email)
+
+mydatabase=# \dt
+          List of relations
+ Schema |  Name   | Type  |  Owner   
+--------+---------+-------+----------
+ public | course  | table | postgres
+ public | notes   | table | postgres
+ public | student | table | postgres
+ public | users   | table | postgres
+(4 rows)
+
+mydatabase=# \d course
+                         Table "public.course"
+   Column    |          Type          | Collation | Nullable | Default 
+-------------+------------------------+-----------+----------+---------
+ course_id   | integer                |           | not null | 
+ course_name | character varying(255) |           |          | 
+ instructor  | character varying(255) |           |          | 
+ credits     | integer                |           |          | 
+Indexes:
+    "course_pkey" PRIMARY KEY, btree (course_id)
+
+mydatabase=# INSERT INTO course(course_id,course_name,instructor,credits) VALUES (101,'Mathematics','Dr. Smith',5);
+INSERT 0 1
+
+mydatabase=# select * from course;
+ course_id | course_name | instructor | credits 
+-----------+-------------+------------+---------
+       101 | Mathematics | Dr. Smith  |       5
+(1 row)
+
+mydatabase=# \d student
+                                           Table "public.student"
+    Column     |          Type          | Collation | Nullable |                   Default                   
+---------------+------------------------+-----------+----------+---------------------------------------------
+ student_id    | integer                |           | not null | nextval('student_student_id_seq'::regclass)
+ first_name    | character varying(50)  |           | not null | 
+ last_name     | character varying(50)  |           | not null | 
+ date_of_birth | date                   |           |          | 
+ email         | character varying(100) |           | not null | 
+Indexes:
+    "student_pkey" PRIMARY KEY, btree (student_id)
+    "student_email_key" UNIQUE CONSTRAINT, btree (email)
+
+
+mydatabase=# ALTER TABLE student
+ADD COLUMN course_id INT,
+ADD CONSTRAINT fk_course
+FOREIGN KEY (course_id)
+REFERENCES course(course_id);
+ALTER TABLE
+mydatabase=#
+
+
+mydatabase=# \d student
+                                           Table "public.student"
+    Column     |          Type          | Collation | Nullable |                   Default                   
+---------------+------------------------+-----------+----------+---------------------------------------------
+ student_id    | integer                |           | not null | nextval('student_student_id_seq'::regclass)
+ first_name    | character varying(50)  |           | not null | 
+ last_name     | character varying(50)  |           | not null | 
+ date_of_birth | date                   |           |          | 
+ email         | character varying(100) |           | not null | 
+ course_id     | integer                |           |          | 
+Indexes:
+    "student_pkey" PRIMARY KEY, btree (student_id)
+    "student_email_key" UNIQUE CONSTRAINT, btree (email)
+Foreign-key constraints:
+    "fk_course" FOREIGN KEY (course_id) REFERENCES course(course_id)
+
+mydatabase=# select * from student
+mydatabase-# ;
+ student_id | first_name | last_name | date_of_birth |      email       | course_id 
+------------+------------+-----------+---------------+------------------+-----------
+          1 | Virat      | Koli      | 2000-01-15    | virat@gmail.com  |          
+          2 | Rohit      | Shrma     | 1999-05-22    | rohit@google.com |          
+(2 rows)
+
+mydatabase=# UPDATE student
+SET course_id = 101             
+WHERE student_id = 1;
+UPDATE 1
+mydatabase=# select * from student;
+ student_id | first_name | last_name | date_of_birth |      email       | course_id 
+------------+------------+-----------+---------------+------------------+-----------
+          2 | Rohit      | Shrma     | 1999-05-22    | rohit@google.com |          
+          1 | Virat      | Koli      | 2000-01-15    | virat@gmail.com  |       101
+(2 rows)
+
+mydatabase=# INSERT INTO course(course_id,course_name,instructor,credits) VALUES (102,'Rocket Science','Dr. A.P.J.Abdual Kalam',5);
+INSERT 0 1
+mydatabase=# select * from course;
+ course_id |  course_name   |       instructor       | credits 
+-----------+----------------+------------------------+---------
+       101 | Mathematics    | Dr. Smith              |       5
+       102 | Rocket Science | Dr. A.P.J.Abdual Kalam |       5
+(2 rows)
+
+mydatabase=# UPDATE student
+SET course_id = 102
+WHERE student_id = 2;
+UPDATE 1
+mydatabase=# select * from student;
+ student_id | first_name | last_name | date_of_birth |      email       | course_id 
+------------+------------+-----------+---------------+------------------+-----------
+          1 | Virat      | Koli      | 2000-01-15    | virat@gmail.com  |       101
+          2 | Rohit      | Shrma     | 1999-05-22    | rohit@google.com |       102
+(2 rows)
+
+mydatabase=# INSERT INTO student (first_name, last_name, date_of_birth, email)
+VALUES
+('Mahandree Sing', 'Dhoni', '1989-03-15', 'dhoni@gmail.com')
+mydatabase-# ;
+INSERT 0 1
+mydatabase=# select * from student;
+ student_id |   first_name   | last_name | date_of_birth |      email       | course_id 
+------------+----------------+-----------+---------------+------------------+-----------
+          1 | Virat          | Koli      | 2000-01-15    | virat@gmail.com  |       101
+          2 | Rohit          | Shrma     | 1999-05-22    | rohit@google.com |       102
+          3 | Mahandree Sing | Dhoni     | 1989-03-15    | dhoni@gmail.com  |          
+(3 rows)
+
+mydatabase=# 
+
+-----------JOINS---------------------------
+                                   
+mydatabase=# SELECT * 
+FROM student INNER JOIN course ON  student.course_id = course.course_id;
+ student_id | first_name | last_name | date_of_birth |      email       | course_id | course_id |  course_name   |       instructor       | credits 
+------------+------------+-----------+---------------+------------------+-----------+-----------+----------------+------------------------+---------
+          1 | Virat      | Koli      | 2000-01-15    | virat@gmail.com  |       101 |       101 | Mathematics    | Dr. Smith              |       5
+          2 | Rohit      | Shrma     | 1999-05-22    | rohit@google.com |       102 |       102 | Rocket Science | Dr. A.P.J.Abdual Kalam |       5
+(2 rows)
+
+mydatabase=# SELECT student.student_id, student.first_name, student.last_name, course.course_name
+FROM student
+LEFT JOIN course ON student.course_id = course.course_id;
+ student_id |   first_name   | last_name |  course_name   
+------------+----------------+-----------+----------------
+          1 | Virat          | Koli      | Mathematics
+          2 | Rohit          | Shrma     | Rocket Science
+          3 | Mahandree Sing | Dhoni     | 
+(3 rows)
+
+mydatabase=# SELECT student.student_id, student.first_name, student.last_name, course.course_name
+FROM student
+RIGHT JOIN course ON student.course_id = course.course_id;
+ student_id | first_name | last_name |  course_name   
+------------+------------+-----------+----------------
+          1 | Virat      | Koli      | Mathematics
+          2 | Rohit      | Shrma     | Rocket Science
+(2 rows)
+
+mydatabase=# INSERT INTO course(course_id,course_name,instructor,credits) VALUES (103,'PHYSICS','Dr. Newton',5);
+INSERT 0 1
+mydatabase=# SELECT student.student_id, student.first_name, student.last_name, course.course_name
+FROM student                                                            
+RIGHT JOIN course ON student.course_id = course.course_id;
+ student_id | first_name | last_name |  course_name   
+------------+------------+-----------+----------------
+          1 | Virat      | Koli      | Mathematics
+          2 | Rohit      | Shrma     | Rocket Science
+            |            |           | PHYSICS
+(3 rows)
+
+mydatabase=# SELECT student.student_id, student.first_name, student.last_name, course.course_name
+FROM student
+FULL JOIN course ON student.course_id = course.course_id;
+ student_id |   first_name   | last_name |  course_name   
+------------+----------------+-----------+----------------
+          1 | Virat          | Koli      | Mathematics
+          2 | Rohit          | Shrma     | Rocket Science
+          3 | Mahandree Sing | Dhoni     | 
+            |                |           | PHYSICS
+(4 rows)
+
+mydatabase=# SELECT student.student_id, student.first_name, student.last_name, course.course_name
+FROM student
+CROSS JOIN course;
+ student_id |   first_name   | last_name |  course_name   
+------------+----------------+-----------+----------------
+          1 | Virat          | Koli      | Mathematics
+          1 | Virat          | Koli      | Rocket Science
+          1 | Virat          | Koli      | PHYSICS
+          2 | Rohit          | Shrma     | Mathematics
+          2 | Rohit          | Shrma     | Rocket Science
+          2 | Rohit          | Shrma     | PHYSICS
+          3 | Mahandree Sing | Dhoni     | Mathematics
+          3 | Mahandree Sing | Dhoni     | Rocket Science
+          3 | Mahandree Sing | Dhoni     | PHYSICS
+(9 rows)
+
+mydatabase=# 
