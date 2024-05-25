@@ -250,3 +250,73 @@ select * from  studentInfo
 \s > /home/lucky/BridgeLabz-jsbasic/Postgres/lods/psqlLogD1.sql
 \s  /home/lucky/BridgeLabz-jsbasic/Postgres/lods/psqlLogD1.sql
 \s  /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
+select * from student
+;
+select * from course
+;
+select * from marks
+;
+\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
+select * from marks
+;
+
+select * from marks
+;
+\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
+\d marks
+select * from marks
+;
+drop table marks
+;
+\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
+\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
+\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
+
+\t marks
+\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
+\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
+select * from marks
+;
+insert into marks (mark_id, student_id, course_id, marks, grade) values (1, 1, 101, 87, 'A');
+insert into marks (mark_id, student_id, course_id, marks, grade) values (2, 2, 101, 87, 'A');
+select * from marks;
+SELECT * FROM marks
+ORDER BY mark_id;
+select student_id from student ;
+select count(*) from student;
+select count(*) from course;
+select count(*) from marks;
+select sum(marks) from marks;
+select sum(student_id) from student
+;
+select sum(credit) from course;
+select sum(credits) from course;
+select avg(marks) from marks;
+select min(marks) from marks;
+select * from marks;
+select * from student where course_id =( (select min(marks) from marks);
+q
+;
+);
+select * from student where course_id =( (select min(marks) from marks)
+);
+select * from student where course_id =(
+select course_id from marks where );
+select * from student where student_id =(
+select student_id from marks where marks=min(marks) );
+select * from student where student_id =(
+select student_id from marks where marks=(select min(marks) from marks ) );
+select upper(instructor) from course
+;
+select instructor from course
+;
+select lower(instructor) from course
+;
+select round(credits/2) from course;
+select concat(student_id,': ',first_name,' ',last_name) from student;
+select concat(student_id,': ',first_name,' ',last_name) as students  from student;
+select substring(instructor from 1 for 3) from course;
+select substring(instructor from 3) from course;
+select substring(instructor from 4) from course;
+\s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD2.sql
+\s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
