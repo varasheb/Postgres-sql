@@ -54,7 +54,6 @@ select * from course;
 UPDATE student
 SET course_id = 102
 WHERE student_id = 2;
-
 INSERT INTO student (first_name, last_name, date_of_birth, email)
 VALUES
 ('Mahandree Sing', 'Dhoni', '1989-03-15', 'dhoni@gmail.com')
@@ -113,7 +112,6 @@ INNER JOIN course ON marks.course_id = course.course_id;
 \s
 \o
 \s > /home/lucky/BridgeLabz-jsbasic/Postgres/psqlLogD1.txt
-
 \s
 \t
 \dt
@@ -126,3 +124,129 @@ select * student
 select * from student;
 \s > /home/lucky/BridgeLabz-jsbasic/Postgres/psqlLogD1.sql
 \s /home/lucky/BridgeLabz-jsbasic/Postgres/psqlLogD1.sql
+\d
+\t
+select * from students
+;
+select * from student;
+/s
+select * from course;
+select * from student inner join course on student.course_id=course.course_id
+;
+select * from student outer join course on student.course_id=course.course_id;
+select * from student outer join course 
+;
+select * from student right join course on student.course_id=course.course_id;
+select * from student left join course on student.course_id=course.course_id;
+select * from student full join course on student.course_id=course.course_id;
+select * from student cross join course on student.course_id=course.course_id;
+select * from student cross join course ;
+select * from student inner join course on student.course_id=course.course_id inner join marks on course.course_id=marks.course_id;
+\s > /home/lucky/BridgeLabz-jsbasic/Postgres/psqlLogD1.sql
+select * from student order by first_name asc
+;
+select * from student order by date_of_birth asc
+;
+select * from student order by date_of_birth des
+;
+select * from student order by date_of_birth desc;
+select now()
+;
+select now();
+select now()::time;
+select Extract(YEAR from now())
+;
+\d stdent
+\d student
+select * from student inner join course on student.course_id=course.course_id inner join marks on course.course_id=marks.course_id;
+select * from student inner join course on student.course_id=course.course_id;
+select * from student inner full course on student.course_id=course.course_id;
+select * from student full join course on student.course_id=course.course_id;
+\t
+\d
+create table student()
+;
+create table studentInfo (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50),
+email VARCHAR(50) UNIQUE,
+course_Name VARCHAR(255) FORENIGN KEY);
+create table studentInfo (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50),
+email VARCHAR(50) UNIQUE,
+course_Name VARCHAR(255) FORGIN KEY);
+create table studentInfo (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50),
+email VARCHAR(50) UNIQUE,
+course_Name VARCHAR(255) FOREGIN KEY);
+create table studentInfo (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50),
+email VARCHAR(50) UNIQUE,
+course_Name VARCHAR(255) FOREIGN KEY);
+create table studentInfo (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50),
+email VARCHAR(50) UNIQUE,
+course_Name VARCHAR(255) FOREIGN KEY);
+create table studentInfo (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50) NOT NULL,
+email VARCHAR(50) UNIQUE ,
+course_Name VARCHAR(255) FOREIGN KEY);9
+create table studentInfo (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50) NOT NULL,
+email VARCHAR(50) UNIQUE ,
+course_name VARCHAR(255) FOREIGN KEY references course_name);
+create table studentInfo (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50) NOT NULL,
+email VARCHAR(50) UNIQUE ,
+course_name VARCHAR(255) FOREIGN KEY references course (course_name));
+create table studentInfo (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50) NOT NULL,
+email VARCHAR(50) UNIQUE ,
+course_name VARCHAR(255) FOREIGN KEY references course(course_name));
+create table studentInfo (
+student_id INT PRIMARY KEY,
+student_name VARCHAR(50) NOT NULL,
+email VARCHAR(50) UNIQUE ,
+course_name VARCHAR(255));
+\d studentInfo
+Insert into studentInfo(student_id,student_name,email,course_name) values (1,virat,virat@gmail.com,MATHEMATICS)
+;
+Insert into studentInfo(student_id,student_name,email,course_name) values (1,'virat','virat@gmail.com','MATHEMATICS')
+;
+SELECT * from studentInfo
+;
+SELECT course_name from studentInfo
+;
+SELECT * from studentInfo;
+\d studentInfo
+select s.student_id,s.first_name,s.eamil,c.course_name from student as s,course as c where s.student_id=c.course_id;
+select s.student_id,s.first_name,s.eamil,c.course_name  from student as s,course as c where s.student_id=c.course_id;
+select s.student_id,s.first_name,c.course_name  from student as s,course as c where s.student_id=c.course_id;
+select s.student_id,s.first_name,c.course_name  from student as s,course as c where s.student_id=c.course_id;
+select s.student_id,s.first_name,c.course_name  from student as s,course as c where s.course_id_id=c.course_id;
+select s.student_id,s.first_name,c.course_name  from student as s,course as c where c.course_id_id=s.course_id;
+select s.student_id,s.first_name,c.course_name  from student ,course where student.course_id_id=course.course_id;
+select student_id,first_name,course_name  from (select * from student inner join course on student.course_id=course.course_id );
+Insert into studentInfo(student_id,student_name,email,course_name) values (1,virat,virat@gmail.com,select coursename from course where course_id=103)
+;
+Insert into studentInfo(student_id,student_name,email,course_name) values (1,virat,virat@gmail.com,(select coursename from course where course_id=103))
+;
+Insert into studentInfo(student_id,student_name,email,course_name) values (1,'virat','virat@gmail.com',(select coursename from course where course_id=103))
+;
+Insert into studentInfo(student_id,student_name,email,course_name) values (1,'virat','virat@gmail.com',(select course_name from course where course_id=103));
+Insert into studentInfo(student_id,student_name,email,course_name) values (2,'virat','virat@gmail.com',(select course_name from course where course_id=103));
+Insert into studentInfo(student_id,student_name,email,course_name) values (2,'rohit shrma','rohit@gmail.com',(select course_name from course where course_id=103));
+select * from  studentInfo
+;
+\s
+\s > /home/lucky/BridgeLabz-jsbasic/Postgres/lods/psqlLogD1.sql
+\s  /home/lucky/BridgeLabz-jsbasic/Postgres/lods/psqlLogD1.sql
+\s  /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
