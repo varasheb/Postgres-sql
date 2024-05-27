@@ -417,3 +417,441 @@ WHERE student_id = ALL (SELECT student_id FROM marks WHERE marks > 90);
 SELECT * FROM student
 WHERE student_id = ALL (SELECT student_id FROM marks WHERE marks > 80);
 \s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
+\d
+\dt
+\l
+SELECT * FROM pg_views;
+create function get_student_grade(student_id INT)
+returns varchar(2) as $$
+declare
+  grade varchar(2);
+begin
+   select grade from marks where student_id = get_student_grade.student_id;
+end;
+$$ language plpgsql
+;
+SELECT get_student_grade(1); 
+drop function if exists get_student_grade(INT);
+SELECT get_student_grade(1); 
+create function get_student_grade(student_id INT)
+returns varchar(2) as $$
+begin
+  return select grade from marks where student_id = get_student_grade.student_id;
+end;
+$$ language plpgsql
+;
+CREATE FUNCTION get_student_grade(student_id INT)
+RETURNS VARCHAR(2) AS $$
+DECLARE
+    grade_value VARCHAR(2);
+BEGIN
+    SELECT grade INTO grade_value FROM marks WHERE student_id = get_student_grade.student_id;
+    RETURN grade_value;
+END;
+$$ LANGUAGE plpgsql;
+SELECT get_student_grade(1); 
+select * from marks
+;
+drop function if exists get_student_grade(INT);
+CREATE FUNCTION get_student_grade(student_id INT)
+RETURNS VARCHAR(2) AS $$
+DECLARE
+    grade_value VARCHAR(2);
+BEGIN
+    SELECT grade INTO grade_value FROM marks WHERE marks.student_id = get_student_grade.student_id;
+    RETURN grade_value;
+END;
+$$ LANGUAGE plpgsql;
+SELECT get_student_grade(1); 
+SELECT get_student_grade(2); 
+SELECT get_student_grade(3); 
+select * from student
+;
+
+SELECT get_student_grade(7); 
+select * from students
+;
+select * from student;
+select * from course;
+select * from marks;
+select now();
+SELECT length('hello');
+SELECT version();
+SELECT TO_DATE('2024-05-30', 'YYYY-MM-DD');
+SELECT ABS(-10);
+s
+;
+SELECT student_id, first_name, SUM(marks) OVER (PARTITION BY student_id) AS total_marks
+FROM student
+INNER JOIN marks ON student.student_id = marks.student_id
+ORDER BY student_id;
+SELECT student_id, first_name, SUM(marks) OVER (PARTITION BY student_id) AS total_marks
+FROM student
+INNER JOIN marks ON student.student_id = marks.student_id
+ORDER BY student_id;
+SELECT student.student_id, first_name, SUM(marks) OVER (PARTITION BY student_id) AS total_marks
+FROM student
+INNER JOIN marks ON student.student_id = marks.student_id
+ORDER BY student_id;
+SELECT student.student_id, first_name, SUM(marks) OVER (PARTITION BY student.student_id) AS total_marks
+FROM student
+INNER JOIN marks ON student.student_id = marks.student_id
+ORDER BY student_id;
+SELECT first_name, ROW_NUMBER() OVER (ORDER BY score DESC) AS rank
+FROM student
+INNER JOIN marks ON student.student_id = marks.student_id
+ORDER BY rank;
+SELECT first_name, ROW_NUMBER() OVER (ORDER BY marks DESC) AS rank
+FROM student
+INNER JOIN marks ON student.student_id = marks.student_id
+ORDER BY rank;
+SELECT first_name, score, LAG(score) OVER (ORDER BY score) AS prev_score
+FROM student
+INNER JOIN marks ON student.student_id = marks.student_id
+ORDER BY score;
+SELECT first_name, score, LAG(score) OVER (ORDER BY score) AS prev_score
+FROM student
+INNER JOIN marks ON student.student_id = marks.student_id
+ORDER BY marks;
+SELECT first_name, marks, LAG(marks) OVER (ORDER BY marks) AS prev_score
+FROM student
+INNER JOIN marks ON student.student_id = marks.student_id
+ORDER BY marks;
+SELECT get_student_grade(1); 
+SELECT get_student_grade(8); 
+SELECT get_student_grade(9); 
+RETURNS integer AS $$
+BEGIN
+    RETURN a + b;
+END;
+$$ LANGUAGE plpgsql;
+RETURNS integer AS $$
+BEGIN
+    RETURN a + b;
+END;
+$$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION add_numbers(a integer, b integer)
+RETURNS integer AS $$
+BEGIN
+    RETURN a + b;
+END;
+$$ LANGUAGE plpgsql;
+select add_numbers(10,20);
+drop function add_numbers(INT,INT);
+select add_numbers(10,20);
+CREATE OR REPLACE FUNCTION add_numbers(a integer,b integer)
+returns integer AS $$
+begin
+return a+b;
+end;
+$$ language plpgsql;
+select add_numbers(10,20);
+create or replace function student_marks(student_id INT)
+RETURNS TABLE report(student_id INTEGER, first_name TEXT, last_name TEXT, date_of_birth DATE, email TEXT,course_name TEXT,instructor TEXT,marks integer,grade TEXT)
+as $$
+begin
+return select student_id , first_name , last_name , date_of_birth , email , course_name , instructor , marks , grade from student s INNER JOIN marks m on s.student_id=m.student_id Inner join course c on s.course_id=c.course_id where s.student_id=student_id;
+end;
+$$ language plpgsql;
+CREATE OR REPLACE FUNCTION student_marks(student_id INT)
+RETURNS TABLE (
+    student_id INTEGER,
+    first_name TEXT,
+    last_name TEXT,
+    date_of_birth DATE,
+    email TEXT,
+    course_name TEXT,
+    instructor TEXT,
+    marks INTEGER,
+    grade TEXT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.student_id, s.first_name, s.last_name, s.date_of_birth, s.email, c.course_name, c.instructor, m.marks, m.grade
+    FROM student s
+    INNER JOIN marks m ON s.student_id = m.student_id
+    INNER JOIN course c ON s.course_id = c.course_id
+    WHERE s.student_id = student_id;
+END;
+$$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION student_marks(student_id INT)
+RETURNS TABLE (
+    student_id INTEGER,
+    first_name TEXT,
+    last_name TEXT,
+    date_of_birth DATE,
+    email TEXT,
+    course_name TEXT,
+    instructor TEXT,
+    marks INTEGER,
+    grade TEXT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.student_id, s.first_name, s.last_name, s.date_of_birth, s.email, c.course_name, c.instructor, m.marks, m.grade
+    FROM student s
+    INNER JOIN marks m ON s.student_id = m.student_id
+    INNER JOIN course c ON s.course_id = c.course_id
+    WHERE s.student_id = student_marks.student_id;
+END;
+$$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION student_marks(student_id INT)
+RETURNS TABLE (
+    student_id INTEGER,
+    first_name TEXT,
+    last_name TEXT,
+    date_of_birth DATE,
+    email TEXT,
+    course_name TEXT,
+    instructor TEXT,
+    marks INTEGER,
+    grade TEXT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.student_id, s.first_name, s.last_name, s.date_of_birth, s.email, c.course_name, c.instructor, m.marks, m.grade
+    FROM student s
+    INNER JOIN marks m ON s.student_id = m.student_id
+    INNER JOIN course c ON s.course_id = c.course_id
+    WHERE s.student_id = student_marks.student_id;
+END;
+$$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION student_marks(studentid integer)
+RETURNS TABLE (
+    student_id INTEGER,
+    first_name TEXT,
+    last_name TEXT,
+    date_of_birth DATE,
+    email TEXT,
+    course_name TEXT,
+    instructor TEXT,
+    marks INTEGER,
+    grade TEXT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.student_id, s.first_name, s.last_name, s.date_of_birth, s.email, c.course_name, c.instructor, m.marks, m.grade
+    FROM student s
+    INNER JOIN marks m ON s.student_id = m.student_id
+    INNER JOIN course c ON s.course_id = c.course_id
+    WHERE s.student_id = student_marks.studentid;
+END;
+$$ LANGUAGE plpgsql;
+select student_marks(1);
+CREATE OR REPLACE FUNCTION student_marks(studentid integer)
+RETURNS TABLE (
+    student_id INTEGER,
+    first_name varchar(255),
+    last_name varchar(255),
+    date_of_birth DATE,
+    email varchar(255),
+    course_name TEXT,
+    instructor TEXT,
+    marks INTEGER,
+    grade TEXT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.student_id, s.first_name, s.last_name, s.date_of_birth, s.email, c.course_name, c.instructor, m.marks, m.grade
+    FROM student s
+    INNER JOIN marks m ON s.student_id = m.student_id
+    INNER JOIN course c ON s.course_id = c.course_id
+    WHERE s.student_id = student_marks.studentid;
+END;
+$$ LANGUAGE plpgsql;
+drop function student_marks(integer)
+;
+CREATE OR REPLACE FUNCTION student_marks(studentid integer)
+RETURNS TABLE (
+    student_id INTEGER,
+    first_name varchar(255),
+    last_name varchar(255),
+    date_of_birth DATE,
+    email varchar(255),
+    course_name TEXT,
+    instructor TEXT,
+    marks INTEGER,
+    grade TEXT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.student_id, s.first_name, s.last_name, s.date_of_birth, s.email, c.course_name, c.instructor, m.marks, m.grade
+    FROM student s
+    INNER JOIN marks m ON s.student_id = m.student_id
+    INNER JOIN course c ON s.course_id = c.course_id
+    WHERE s.student_id = student_marks.studentid;
+END;
+$$ LANGUAGE plpgsql;
+select student_marks(1);
+drop function student_marks(integer)
+;
+CREATE OR REPLACE FUNCTION student_marks(studentid integer)
+RETURNS TABLE (
+    student_id INTEGER,
+    first_name varchar(50),
+    last_name varchar(50),
+    date_of_birth DATE,
+    email varchar(100),
+    course_name TEXT,
+    instructor TEXT,
+    marks INTEGER,
+    grade TEXT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.student_id, s.first_name, s.last_name, s.date_of_birth, s.email, c.course_name, c.instructor, m.marks, m.grade
+    FROM student s
+    INNER JOIN marks m ON s.student_id = m.student_id
+    INNER JOIN course c ON s.course_id = c.course_id
+    WHERE s.student_id = student_marks.studentid;
+END;
+$$ LANGUAGE plpgsql;
+select student_marks(1);
+drop function student_marks(integer)
+;
+CREATE OR REPLACE FUNCTION student_marks(studentid integer)
+RETURNS TABLE (
+    student_id INTEGER,
+    first_name varchar(50),
+    last_name varchar(50),
+    date_of_birth DATE,
+    email varchar(100),
+    course_name varchar(255),
+    instructor varchar(255),
+    marks INTEGER,
+    grade varchar(2)
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.student_id, s.first_name, s.last_name, s.date_of_birth, s.email, c.course_name, c.instructor, m.marks, m.grade
+    FROM student s
+    INNER JOIN marks m ON s.student_id = m.student_id
+    INNER JOIN course c ON s.course_id = c.course_id
+    WHERE s.student_id = student_marks.studentid;
+END;
+$$ LANGUAGE plpgsql;
+select student_marks(1);
+select student_marks(2);
+select student_marks(5);
+select student_marks(9);
+CREATE OR REPLACE FUNCTION student_marks_summary(student_id INTEGER)
+RETURNS TABLE (
+    total_marks INTEGER,
+    average_marks NUMERIC
+)
+AS $$
+DECLARE
+    total INTEGER;
+    count INTEGER;
+BEGIN
+    SELECT SUM(marks), COUNT(*)
+    INTO total, count
+    FROM marks
+    WHERE student_id = student_id;
+
+    IF count = 0 THEN
+        total_marks := 0;
+        average_marks := 0;
+    ELSE
+        total_marks := total;
+        average_marks := total::NUMERIC / count;
+    END IF;
+
+    RETURN NEXT;
+END;
+$$ LANGUAGE plpgsql;
+select student_marks_summary(3);
+drop function student_marks_summary(integer);
+CREATE OR REPLACE FUNCTION student_marks_summary(student_id INTEGER)
+RETURNS TABLE (
+    total_marks INTEGER,
+    average_marks NUMERIC
+)
+AS $$
+DECLARE
+    total INTEGER;
+    count INTEGER;
+BEGIN
+    SELECT SUM(marks), COUNT(*)
+    INTO total, count
+    FROM marks
+    WHERE student_id = student_marks_summary.student_id;
+
+    IF count = 0 THEN
+        total_marks := 0;
+        average_marks := 0;
+    ELSE
+        total_marks := total;
+        average_marks := total::NUMERIC / count;
+    END IF;
+
+    RETURN NEXT;
+END;
+$$ LANGUAGE plpgsql;
+drop function student_marks_summary(integer);
+CREATE OR REPLACE FUNCTION student_marks_summary(student_id INTEGER)
+RETURNS TABLE (
+    total_marks INTEGER,
+    average_marks NUMERIC
+)
+AS $$
+DECLARE
+    total INTEGER;
+    count INTEGER;
+BEGIN
+    SELECT SUM(marks), COUNT(*)
+    INTO total, count
+    FROM marks
+    WHERE student_id = student_marks_summary.student_id;
+
+    IF count = 0 THEN
+        total_marks := 0;
+        average_marks := 0;
+    ELSE
+        total_marks := total;
+        average_marks := total::NUMERIC / count;
+    END IF;
+
+    RETURN NEXT;
+END;
+$$ LANGUAGE plpgsql;
+
+select student_marks_summary(1);
+drop function student_marks_summary(integer);
+CREATE OR REPLACE FUNCTION student_marks_summary(student_id INTEGER)
+RETURNS TABLE (
+    total_marks INTEGER,
+    average_marks NUMERIC
+)
+AS $$
+DECLARE
+    total INTEGER;
+    count INTEGER;
+BEGIN
+    SELECT SUM(marks), COUNT(*)
+    INTO total, count
+    FROM marks
+    WHERE marks.student_id = student_marks_summary.student_id;
+
+    IF count = 0 THEN
+        total_marks := 0;
+        average_marks := 0;
+    ELSE
+        total_marks := total;
+        average_marks := total::NUMERIC / count;
+    END IF;
+
+    RETURN NEXT;
+END;
+$$ LANGUAGE plpgsql;
+select student_marks_summary(2);
+select student_marks_summary(2);
+\s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql

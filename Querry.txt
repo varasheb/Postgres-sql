@@ -391,3 +391,89 @@ mydatabase=# select * from student inner join course on student.course_id=course
           2 | Rohit      | Shrma     | 1999-05-22    | rohit@google.com     |       102 |       102 | Rocket Science | Dr. A.P.J.Abdual Kalam |       5 |       2 |          2 |       102 |    78 | B
 
 mydatabase=# 
+mydatabase=# CREATE OR REPLACE FUNCTION student_marks_summary(student_id INTEGER)
+RETURNS TABLE (
+    total_marks INTEGER,
+    average_marks NUMERIC
+)
+AS $$
+DECLARE
+    total INTEGER;
+    count INTEGER;
+BEGIN
+    SELECT SUM(marks), COUNT(*)
+    INTO total, count
+    FROM marks
+    WHERE marks.student_id = student_marks_summary.student_id;
+
+    IF count = 0 THEN
+        total_marks := 0;
+        average_marks := 0;
+    ELSE
+        total_marks := total;
+        average_marks := total::NUMERIC / count;
+    END IF;
+
+    RETURN NEXT;
+END;
+$$ LANGUAGE plpgsql;
+CREATE FUNCTION
+mydatabase=# select student_marks_summary(2);
+  student_marks_summary   
+--------------------------
+ (87,87.0000000000000000)
+(1 row)
+
+mydatabase=# select student_marks_summary(2);
+  student_marks_summary   
+--------------------------
+ (87,87.0000000000000000)
+(1 row)
+
+mydatabase=# 
+mydatabase=# CREATE OR REPLACE FUNCTION student_marks(studentid integer)
+RETURNS TABLE (
+    student_id INTEGER,
+    first_name varchar(50),
+    last_name varchar(50),
+    date_of_birth DATE,
+    email varchar(100),
+    course_name varchar(255),
+    instructor varchar(255),
+    marks INTEGER,
+    grade varchar(2)
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.student_id, s.first_name, s.last_name, s.date_of_birth, s.email, c.course_name, c.instructor, m.marks, m.grade
+    FROM student s
+    INNER JOIN marks m ON s.student_id = m.student_id
+    INNER JOIN course c ON s.course_id = c.course_id
+    WHERE s.student_id = student_marks.studentid;
+END;
+$$ LANGUAGE plpgsql;
+CREATE FUNCTION
+mydatabase=# select student_marks(1);
+                             student_marks                              
+------------------------------------------------------------------------
+ (1,Virat,Koli,2000-01-15,virat@gmail.com,Mathematics,"Dr. Smith",87,A)
+(1 row)
+
+mydatabase=# select student_marks(2);
+                                       student_marks                                        
+--------------------------------------------------------------------------------------------
+ (2,Rohit,Shrma,1999-05-22,rohit@google.com,"Rocket Science","Dr. A.P.J.Abdual Kalam",87,A)
+(1 row)
+
+mydatabase=# select student_marks(5);
+                                       student_marks                                        
+--------------------------------------------------------------------------------------------
+ (5,Helen,Keme,1999-03-06,hkeme4@scribd.com,"Rocket Science","Dr. A.P.J.Abdual Kalam",11,F)
+(1 row)
+
+mydatabase=# select student_marks(9);
+                                 student_marks                                  
+--------------------------------------------------------------------------------
+ (9,Bartholomeo,Fawdrie,2020-01-05,bfawdrie8@loc.gov,PHYSICS,"Dr. Newton",33,D)
+(1 row)

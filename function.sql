@@ -91,3 +91,20 @@ FROM student
 INNER JOIN marks ON student.student_id = marks.student_id
 ORDER BY student_id;
 
+>>>>>>>>>>User-defined functions (UDFs) <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+UDF in PostgreSQL are functions that are created by users to perform custom operations. 
+They can be written in various languages supported by PostgreSQL, such as SQL, PL/pgSQL, PL/Python, PL/Perl, PL/Tcl, etc. 
+UDFs can simplify complex operations, improve code reusability, and encapsulate logic within the database.
+
+Creating a User-Defined Function (UDF):
+
+CREATE OR REPLACE FUNCTION add_numbers(a integer, b integer)
+RETURNS integer AS $$
+BEGIN
+    RETURN a + b;
+END;
+$$ LANGUAGE plpgsql;
+
+Calling a User-Defined Function:
+SELECT add_numbers(10, 20); -- Returns 30
