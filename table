@@ -1,0 +1,36 @@
+mydatabase=# select * from student;
+ student_id |   first_name   | last_name | date_of_birth |         email         | course_id 
+------------+----------------+-----------+---------------+-----------------------+-----------
+          1 | Virat          | Koli      | 2000-01-15    | virat@gmail.com       |       101
+          2 | Rohit          | Shrma     | 1999-05-22    | rohit@google.com      |       102
+          3 | Mahandree Sing | Dhoni     | 1989-03-15    | dhoni@gmail.com       |          
+          4 | Carleton       | Ponnsett  | 2008-04-02    | cponnsett3@gnu.org    |       103
+          5 | Helen          | Keme      | 1999-03-06    | hkeme4@scribd.com     |       102
+          7 | Gordie         | Josefson  | 2001-02-03    | gjosefson6@upenn.edu  |       102
+          8 | Janot          | Goalby    | 2005-08-02    | jgoalby7@sphinn.com   |       103
+          9 | Bartholomeo    | Fawdrie   | 2020-01-05    | bfawdrie8@loc.gov     |       103
+         10 | Deane          | Masurel   | 2009-06-09    | dmasurel9@cornell.edu |       103
+(9 rows)
+
+mydatabase=# select * from course;
+ course_id |  course_name   |       instructor       | credits 
+-----------+----------------+------------------------+---------
+       101 | Mathematics    | Dr. Smith              |       5
+       102 | Rocket Science | Dr. A.P.J.Abdual Kalam |       5
+       103 | PHYSICS        | Dr. Newton             |       5
+(3 rows)
+
+mydatabase=# select * from marks;
+ mark_id | student_id | course_id | marks | grade 
+---------+------------+-----------+-------+-------
+       3 |          3 |       102 |    72 | B
+       5 |          5 |       103 |    11 | F
+       7 |          7 |       101 |    55 | C
+       8 |          8 |       103 |    35 | D
+       9 |          9 |       101 |    33 | D
+      10 |         10 |       101 |    57 | C
+       1 |          1 |       101 |    87 | A
+       2 |          2 |       101 |    87 | A
+(8 rows)
+
+mydatabase=# 
