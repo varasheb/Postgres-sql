@@ -246,77 +246,174 @@ Insert into studentInfo(student_id,student_name,email,course_name) values (2,'vi
 Insert into studentInfo(student_id,student_name,email,course_name) values (2,'rohit shrma','rohit@gmail.com',(select course_name from course where course_id=103));
 select * from  studentInfo
 ;
-\s
-\s > /home/lucky/BridgeLabz-jsbasic/Postgres/lods/psqlLogD1.sql
-\s  /home/lucky/BridgeLabz-jsbasic/Postgres/lods/psqlLogD1.sql
-\s  /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
-select * from student
-;
-select * from course
-;
-select * from marks
-;
-\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
-select * from marks
-;
+SELECT name
+FROM student
+WHERE student_id IN (SELECT student_id
+                     FROM marks
+                     WHERE grade = 'A');
+SELECT first_name
+FROM student
+WHERE student_id IN (SELECT student_id
+                     FROM marks
+                     WHERE grade = 'A');
+SELECT concat(first_name," ",last_name) as name
+FROM student
+WHERE student_id IN (SELECT student_id
+                     FROM marks
+                     WHERE grade = 'A');
+SELECT concat(first_name,' ',last_name) as name
+FROM student
+WHERE student_id IN (SELECT student_id
+                     FROM marks
+                     WHERE grade = 'A');
+SELECT concat(first_name," ",last_name) as name
 
-select * from marks
+FROM student
+WHERE student_id = (SELECT student_id
+                    FROM marks
+                    WHERE course_id = 101
+                    ORDER BY marks DESC
+                    LIMIT 1);
+SELECT concat(first_name,' ',last_name) as name
+FROM student
+WHERE student_id = (SELECT student_id
+                    FROM marks
+                    WHERE course_id = 101
+                    ORDER BY marks DESC
+                    LIMIT 1);
+SELECT student_id, course_id
+FROM marks
+WHERE (student_id, course_id) IN (SELECT student_id, course_id
+                                  FROM marks
+                                  WHERE marks > 80);
+SELECT name
+FROM student s
+WHERE EXISTS (SELECT 1
+              FROM marks m
+              WHERE m.student_id = s.student_id
+              AND m.marks > (SELECT AVG(marks)
+                             FROM marks
+                             WHERE course_id = m.course_id));
+SELECT first_name
+FROM student s
+WHERE EXISTS (SELECT 1
+              FROM marks m
+              WHERE m.student_id = s.student_id
+              AND m.marks > (SELECT AVG(marks)
+                             FROM marks
+                             WHERE course_id = m.course_id));
+CREATE VIEW top_students AS
+SELECT student_id, name
+FROM student
+WHERE student_id IN (SELECT student_id FROM marks WHERE grade = 'A');
+CREATE VIEW top_students AS
+SELECT student_id, concat(first_name,' ',last_name)
+FROM student
+WHERE student_id IN (SELECT student_id FROM marks WHERE grade = 'A');
+select * from top_students
 ;
-\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
-\d marks
-select * from marks
-;
-drop table marks
-;
-\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
-\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
-\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
+CREATE VIEW student_courses AS
+SELECT s.student_id, s.name, c.course_name, m.marks, m.grade
+FROM student s
+JOIN marks m ON s.student_id = m.student_id
+JOIN course c ON m.course_id = c.course_id;
+CREATE VIEW student_courses AS
+SELECT s.student_id, concat(s.first_name,' ',s.last_name) as name, c.course_name, m.marks, m.grade
+FROM student s
+JOIN marks m ON s.student_id = m.student_id
+JOIN course c ON m.course_id = c.course_id;
+SELECT * FROM student_courses;
+CREATE MATERIALIZED VIEW student_avg_marks AS
+SELECT student_id, AVG(marks) AS avg_marks
+FROM marks
+GROUP BY student_id;
+REFRESH MATERIALIZED VIEW student_avg_marks;
+REFRESH MATERIALIZED VIEW student_avg_marks;
+SELECT * FROM student_avg_marks;
+SELECT 10 + 5 AS addition;
+SELECT 10 - 5 AS subtraction;
+SELECT 10 * 5 AS multiplication;
+SELECT 10 / 5 AS division;
+SELECT 10 % 3 AS modulus;
+SELECT * FROM student WHERE age = 20;
+SELECT * FROM student WHERE age <> 20;
+SELECT * FROM student WHERE age > 20;
+SELECT * FROM student WHERE age < 20;
+SELECT * FROM student WHERE age >= 20;
+SELECT * FROM student WHERE age <= 20;
+SELECT * FROM student WHERE date_of_birth = '2004-05-27';
+SELECT * FROM student WHERE date_of_birth <> '2004-05-27';
+SELECT * FROM student WHERE date_of_birth > '2004-05-27';
+SELECT * FROM student WHERE date_of_birth < '2004-05-27';
+SELECT * FROM student WHERE date_of_birth >= '2004-05-27';
+SELECT * FROM student WHERE date_of_birth <= '2004-05-27';
+SELECT * FROM student WHERE date_of_birth < '2003-01-01' AND grade = 'A';
+SELECT * FROM student WHERE date_of_birth < '2003-01-01' OR grade = 'A';
+SELECT * FROM student WHERE NOT (grade = 'F');
+SELECT * FROM student WHERE date_of_birth < '2003-01-01' AND grade = 'A';
+SELECT * FROM student WHERE date_of_birth < '2003-01-01' OR course_id = '101';
+SELECT * FROM student WHERE NOT (course_id = '101');
+SELECT 'Hello' || ' ' || 'World' AS greeting;
+SELECT * FROM student WHERE name LIKE 'A%';
+SELECT * FROM student WHERE name ILIKE 'a%';
+SELECT 'Hello' || ' ' || 'World' AS greeting;
+SELECT * FROM student WHERE first_name LIKE 'A%';
+SELECT * FROM student WHERE first_name ILIKE 'a%';
+SELECT 5 & 3 AS bitwise_and;
+SELECT 5 | 3 AS bitwise_or;
+SELECT 5 # 3 AS bitwise_xor;
+SELECT ~5 AS bitwise_not;
+SELECT 5 << 1 AS bitwise_shift_left;
+SELECT 5 >> 1 AS bitwise_shift_right;
+SELECT course_id FROM student
+UNION
+SELECT course_id FROM course;
 
-\t marks
-\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
-\i /home/lucky/BridgeLabz-jsbasic/Postgres/MockDataQuerry/marks.sql
-select * from marks
-;
-insert into marks (mark_id, student_id, course_id, marks, grade) values (1, 1, 101, 87, 'A');
-insert into marks (mark_id, student_id, course_id, marks, grade) values (2, 2, 101, 87, 'A');
-select * from marks;
-SELECT * FROM marks
-ORDER BY mark_id;
-select student_id from student ;
-select count(*) from student;
-select count(*) from course;
-select count(*) from marks;
-select sum(marks) from marks;
-select sum(student_id) from student
-;
-select sum(credit) from course;
-select sum(credits) from course;
-select avg(marks) from marks;
-select min(marks) from marks;
-select * from marks;
-select * from student where course_id =( (select min(marks) from marks);
-q
-;
-);
-select * from student where course_id =( (select min(marks) from marks)
-);
-select * from student where course_id =(
-select course_id from marks where );
-select * from student where student_id =(
-select student_id from marks where marks=min(marks) );
-select * from student where student_id =(
-select student_id from marks where marks=(select min(marks) from marks ) );
-select upper(instructor) from course
-;
-select instructor from course
-;
-select lower(instructor) from course
-;
-select round(credits/2) from course;
-select concat(student_id,': ',first_name,' ',last_name) from student;
-select concat(student_id,': ',first_name,' ',last_name) as students  from student;
-select substring(instructor from 1 for 3) from course;
-select substring(instructor from 3) from course;
-select substring(instructor from 4) from course;
-\s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD2.sql
+SELECT course_id FROM student
+UNION ALL
+SELECT course_id FROM course;
+
+SELECT course_id FROM student
+INTERSECT
+SELECT course_id FROM course;
+
+SELECT course_id FROM student
+EXCEPT
+SELECT course_id FROM course;
+SELECT course_id FROM student
+UNION
+SELECT course_id FROM course;
+
+SELECT course_id FROM student
+UNION ALL
+SELECT course_id FROM course;
+
+SELECT course_id FROM student
+INTERSECT
+SELECT course_id FROM course;
+
+SELECT course_id FROM student
+EXCEPT
+SELECT course_id FROM course;
+SELECT * FROM student WHERE date_of_birth IS NULL;
+SELECT * FROM student WHERE date_of_birth IS NOT NULL;
+
+SELECT * FROM marks WHERE grade IN ('A', 'B', 'C');
+
+SELECT * FROM student WHERE date_of_birth BETWEEN '2000-01-01' AND '2003-01-01';
+
+SELECT * FROM student
+WHERE student_id = ANY (SELECT student_id FROM marks WHERE marks >= 90);
+SELECT * FROM student
+WHERE student_id = ALL (SELECT student_id FROM marks WHERE marks > 70);
+SELECT * FROM student
+WHERE student_id = ANY (SELECT student_id FROM marks WHERE marks >= 50);
+SELECT * FROM student
+WHERE student_id = ALL (SELECT student_id FROM marks WHERE marks > 60);
+SELECT * FROM student
+WHERE student_id = ANY (SELECT student_id FROM marks WHERE marks >= 50);
+SELECT * FROM student
+WHERE student_id = ALL (SELECT student_id FROM marks WHERE marks > 90);
+SELECT * FROM student
+WHERE student_id = ALL (SELECT student_id FROM marks WHERE marks > 80);
 \s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql

@@ -1,0 +1,126 @@
+>>>>>>>>1. Arithmetic Operators <<<<<<<<<<<<<<
+Arithmetic operators perform mathematical operations on numerical data.
+
+** Addition (+): Adds two numbers.
+** Subtraction (-): Subtracts the second number from the first.
+** Multiplication (*): Multiplies two numbers.
+** Division (/): Divides the first number by the second.
+** Modulus (%): Returns the remainder of the division.
+
+Examples:
+SELECT 10 + 5 AS addition;
+SELECT 10 - 5 AS subtraction;
+SELECT 10 * 5 AS multiplication;
+SELECT 10 / 5 AS division;
+SELECT 10 % 3 AS modulus;
+
+
+>>>>>2. Comparison Operators <<<<<<<<<<<<<
+Comparison operators are used to compare two values.
+
+** Equal (=): Checks if two values are equal.
+** Not Equal (<> or !=): Checks if two values are not equal.
+** Greater Than (>): Checks if the first value is greater than the second.
+** Less Than (<): Checks if the first value is less than the second.
+** Greater Than or Equal To (>=): Checks if the first value is greater than or equal to the second.
+** Less Than or Equal To (<=): Checks if the first value is less than or equal to the second.
+
+Examples:
+SELECT * FROM student WHERE date_of_birth = '2004-05-27';
+SELECT * FROM student WHERE date_of_birth <> '2004-05-27';
+SELECT * FROM student WHERE date_of_birth > '2004-05-27';
+SELECT * FROM student WHERE date_of_birth < '2004-05-27';
+SELECT * FROM student WHERE date_of_birth >= '2004-05-27';
+SELECT * FROM student WHERE date_of_birth <= '2004-05-27';
+
+
+>>>>>>>>>>>>>>>>>3. Logical Operators<<<<<<<<<<<<<<<<<<
+Logical operators are used to combine multiple conditions.
+
+** AND: Returns true if both conditions are true.
+** OR: Returns true if at least one condition is true.
+** NOT: Returns true if the condition is false.
+
+Examples:
+SELECT * FROM student WHERE date_of_birth < '2003-01-01' AND grade = 'A';
+SELECT * FROM student WHERE date_of_birth < '2003-01-01' OR course_id = '101';
+SELECT * FROM student WHERE NOT (course_id = '101');
+
+
+>>>>>>>>>>>>>>>>4. String Operators <<<<<<<<<<<<<<<<<<<<<<
+String operators perform operations on string values.
+
+** Concatenation (||): Concatenates two strings.
+** Pattern Matching (LIKE): Searches for a specified pattern in a string.
+** Pattern Matching (ILIKE): Searches for a specified pattern in a string (case-insensitive).
+
+Examples:
+SELECT 'Hello' || ' ' || 'World' AS greeting;
+SELECT * FROM student WHERE first_name LIKE 'A%';
+SELECT * FROM student WHERE first_name ILIKE 'a%';
+
+>>>>>>>>>>>>>>>>5. Bitwise Operators<<<<<<<<<<<<<<<<<<<<<<<<<<
+Bitwise operators perform bitwise operations on integer values.
+
+** Bitwise AND (&): Performs a bitwise AND operation.
+** Bitwise OR (|): Performs a bitwise OR operation.
+** Bitwise XOR (#): Performs a bitwise XOR operation.
+** Bitwise NOT (~): Performs a bitwise NOT operation.
+** Bitwise Shift Left (<<): Shifts bits to the left.
+** Bitwise Shift Right (>>): Shifts bits to the right.
+
+Examples:
+SELECT 5 & 3 AS bitwise_and;
+SELECT 5 | 3 AS bitwise_or;
+SELECT 5 # 3 AS bitwise_xor;
+SELECT ~5 AS bitwise_not;
+SELECT 5 << 1 AS bitwise_shift_left;
+SELECT 5 >> 1 AS bitwise_shift_right;
+
+
+>>>>>>>>>>>>>>>6. Set Operators<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Set operators combine the results of two or more queries.
+
+** UNION: Combines the results of two queries, removing duplicates.
+** UNION ALL: Combines the results of two queries, including duplicates.
+** INTERSECT: Returns the common rows from two queries.
+** EXCEPT: Returns the rows from the first query that are not in the second query.
+
+
+Examples:
+SELECT course_id FROM student
+UNION
+SELECT course_id FROM course;
+
+SELECT course_id FROM student
+UNION ALL
+SELECT course_id FROM course;
+
+SELECT course_id FROM student
+INTERSECT
+SELECT course_id FROM course;
+
+SELECT course_id FROM student
+EXCEPT
+SELECT course_id FROM course;
+
+>>>>>>>>>>>>7. Other Operators<<<<<<<<<<<<<<<<<<<<<
+** IS NULL / IS NOT NULL: Checks if a value is null or not.
+** IN: Checks if a value is within a list of values.
+** BETWEEN: Checks if a value is within a range of values.
+** ANY / ALL: Compares a value to a set of values.
+
+Examples:
+SELECT * FROM student WHERE date_of_birth IS NULL;
+SELECT * FROM student WHERE date_of_birth IS NOT NULL;
+
+SELECT * FROM marks WHERE grade IN ('A', 'B', 'C');
+
+SELECT * FROM student WHERE date_of_birth BETWEEN '2000-01-01' AND '2003-01-01';
+
+SELECT * FROM student
+WHERE student_id = ANY (SELECT student_id FROM marks WHERE marks >= 50);
+SELECT * FROM student
+WHERE student_id = ALL (SELECT student_id FROM marks WHERE marks > 80);
+
+================================================================

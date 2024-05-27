@@ -1,0 +1,16 @@
+>>>>>>>>>>>>>> Views <<<<<<<<<<<<<<<<<<<
+views in PostgreSQL are virtual tables that represent the result of a stored query. They provide a way to simplify complex queries,
+encapsulate logic, and improve security by restricting access to specific data.
+
+** Types of Views
+
+Simple View: A view based on a single table.
+Complex View: A view based on multiple tables with joins and/or aggregations.
+Materialized View: A view that stores its result set as a physical table, which can be refreshed periodically.
+
+syntax
+
+CREATE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;

@@ -94,5 +94,30 @@ CROSS JOIN: Returns the Cartesian product of the two tables, i.e., all possible 
 SELECT student.student_id, student.first_name, student.last_name, course.course_name
 FROM student
 CROSS JOIN course;
+-----------------------------------------------------------------------------------------------------
 
+Constraints
 
+NOT NULL: Ensures a column cannot have NULL values.
+
+UNIQUE: Ensures all values in a column are unique.
+
+PRIMARY KEY: Uniquely identifies each record in a table, combining NOT NULL and UNIQUE.
+
+FOREIGN KEY: Ensures referential integrity between tables.
+
+CHECK: Ensures that values in a column satisfy a specific condition.
+
+DEFAULT: Provides a default value for a column.
+
+------------------------------------------------------------------------------------------------------
+Types of Subqueries
+
+Single-Row Subquery: Returns a single row.
+
+Multiple-Row Subquery: Returns multiple rows.
+
+Multiple-Column Subquery: Returns multiple columns.
+
+Correlated Subquery: References columns from the outer query.
+-------------------------------------------------------------------------------------------------------
