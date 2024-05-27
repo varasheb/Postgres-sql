@@ -477,3 +477,37 @@ mydatabase=# select student_marks(9);
 --------------------------------------------------------------------------------
  (9,Bartholomeo,Fawdrie,2020-01-05,bfawdrie8@loc.gov,PHYSICS,"Dr. Newton",33,D)
 (1 row)
+================================================================================================
+mydatabase=# CREATE OR REPLACE PROCEDURE insert_student(studentid INT,   
+    first_name_param VARCHAR(50),
+    last_name_param VARCHAR(50),
+    date_of_birth_param DATE,
+    email_param VARCHAR(100),
+    course_id_param INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO student (student_id,first_name, last_name, date_of_birth, email, course_id)
+    VALUES (studentid,first_name_param, last_name_param, date_of_birth_param, email_param, course_id_param);
+END;
+$$;
+CREATE PROCEDURE
+mydatabase=# CALL insert_student(11,'Gouthum', 'Gambir', '2000-05-10', 'goutum@example.com', 101);
+CALL
+mydatabase=# select * from student;
+ student_id |   first_name   | last_name | date_of_birth |         email         | course_id 
+------------+----------------+-----------+---------------+-----------------------+-----------
+          1 | Virat          | Koli      | 2000-01-15    | virat@gmail.com       |       101
+          2 | Rohit          | Shrma     | 1999-05-22    | rohit@google.com      |       102
+          3 | Mahandree Sing | Dhoni     | 1989-03-15    | dhoni@gmail.com       |          
+          4 | Carleton       | Ponnsett  | 2008-04-02    | cponnsett3@gnu.org    |       103
+          5 | Helen          | Keme      | 1999-03-06    | hkeme4@scribd.com     |       102
+          7 | Gordie         | Josefson  | 2001-02-03    | gjosefson6@upenn.edu  |       102
+          8 | Janot          | Goalby    | 2005-08-02    | jgoalby7@sphinn.com   |       103
+          9 | Bartholomeo    | Fawdrie   | 2020-01-05    | bfawdrie8@loc.gov     |       103
+         10 | Deane          | Masurel   | 2009-06-09    | dmasurel9@cornell.edu |       103
+         11 | Gouthum        | Gambir    | 2000-05-10    | goutum@example.com    |       101
+(10 rows)
+
+mydatabase=# 

@@ -1,0 +1,29 @@
+>>>>>>>>>Stored Procedure<<<<<<<<<<<<<<<
+A stored procedure is like a recipe or a set of instructions that the database can remember and execute later. 
+It's a way to store a sequence of database operations as a single unit.
+
+
+SYNTAX:
+
+CREATE OR REPLACE PROCEDURE procedure_name(parameters)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- SQL statements here
+END;
+$$;
+
+
+-------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE get_all_students()
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    SELECT * FROM student;
+END;
+$$;
+To call this stored procedure and execute it, you can use the CALL statement:
+
+++++++++++++++>
+CALL get_all_students();
+-----------------------------------------------------------------

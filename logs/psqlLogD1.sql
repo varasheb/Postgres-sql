@@ -467,7 +467,6 @@ SELECT get_student_grade(2);
 SELECT get_student_grade(3); 
 select * from student
 ;
-
 SELECT get_student_grade(7); 
 select * from students
 ;
@@ -823,7 +822,6 @@ BEGIN
     RETURN NEXT;
 END;
 $$ LANGUAGE plpgsql;
-
 select student_marks_summary(1);
 drop function student_marks_summary(integer);
 CREATE OR REPLACE FUNCTION student_marks_summary(student_id INTEGER)
@@ -854,4 +852,181 @@ END;
 $$ LANGUAGE plpgsql;
 select student_marks_summary(2);
 select student_marks_summary(2);
+\s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
+DELIMITER //
+CREATE PROCEDURE calculate_avg_marks(IN student_id_param INT)
+BEGIN
+    DECLARE total_marks DECIMAL;
+    DECLARE total_subjects INT;
+    DECLARE avg_marks DECIMAL;
+
+    SELECT SUM(marks), COUNT(marks) INTO total_marks, total_subjects
+    FROM marks
+    WHERE student_id = student_id_param;
+
+    IF total_subjects > 0 THEN
+        SET avg_marks := total_marks / total_subjects;
+        SELECT avg_marks;
+    ELSE
+        SELECT 0;
+    END IF;
+END //
+DELIMITER ;
+DELIMITER //
+
+CREATE PROCEDURE calculate_avg_marks(IN student_id_param INT)
+BEGIN
+    DECLARE total_marks DECIMAL(10,2);
+    DECLARE total_subjects INT;
+    DECLARE avg_marks DECIMAL(10,2);
+
+    SELECT SUM(marks), COUNT(marks) INTO total_marks, total_subjects
+    FROM marks
+    WHERE student_id = student_id_param;
+
+    IF total_subjects > 0 THEN
+        SET avg_marks = total_marks / total_subjects;
+        SELECT avg_marks;
+    ELSE
+        SELECT 0;
+    END IF;
+END //
+
+DELIMITER ;
+
+CREATE PROCEDURE calculate_avg_marks(IN student_id_param INT)
+BEGIN
+    DECLARE total_marks DECIMAL(10,2);
+    DECLARE total_subjects INT;
+    DECLARE avg_marks DECIMAL(10,2);
+
+    SELECT SUM(marks), COUNT(marks) INTO total_marks, total_subjects
+    FROM marks
+    WHERE student_id = student_id_param;
+
+    IF total_subjects > 0 THEN
+        SET avg_marks = total_marks / total_subjects;
+        SELECT avg_marks;
+    ELSE
+        SELECT 0;
+    END IF;
+END 
+
+DELIMITER ;
+
+CREATE PROCEDURE calculate_avg_marks(IN student_id_param INT)
+BEGIN
+    DECLARE total_marks DECIMAL(10,2);
+    DECLARE total_subjects INT;
+    DECLARE avg_marks DECIMAL(10,2);
+
+    SELECT SUM(marks), COUNT(marks) INTO total_marks, total_subjects
+    FROM marks
+    WHERE student_id = student_id_param;
+
+    IF total_subjects > 0 THEN
+        SET avg_marks = total_marks / total_subjects;
+        SELECT avg_marks;
+    ELSE
+        SELECT 0;
+    END IF;
+END ;
+CREATE PROCEDURE insert_student(
+    IN first_name VARCHAR(50),
+    IN last_name VARCHAR(50),
+    IN date_of_birth DATE,
+    IN email VARCHAR(100),
+    IN course_id INT
+)
+BEGIN
+    INSERT INTO student (first_name, last_name, date_of_birth, email, course_id)
+    VALUES (first_name, last_name, date_of_birth, email, course_id);
+END;
+clear
+;
+CREATE PROCEDURE insert_student(
+    IN first_name VARCHAR(50),
+    IN last_name VARCHAR(50),
+    IN date_of_birth DATE,
+    IN email VARCHAR(100),
+    IN course_id INT
+)
+BEGIN
+    INSERT INTO student (first_name, last_name, date_of_birth, email, course_id)
+    VALUES (first_name, last_name, date_of_birth, email, course_id);
+END;
+CREATE PROCEDURE insert_student(
+   IN student_id INT IN first_name VARCHAR(50),
+    IN last_name VARCHAR(50),
+    IN date_of_birth DATE,
+    IN email VARCHAR(100),
+    IN course_id INT
+)
+BEGIN
+    INSERT INTO student (student_id ,first_name, last_name, date_of_birth, email, course_id)
+    VALUES (student_id,first_name, last_name, date_of_birth, email, course_id);
+END;
+CREATE PROCEDURE insert_student(
+   IN student_id INT, IN first_name VARCHAR(50),
+    IN last_name VARCHAR(50),
+    IN date_of_birth DATE,
+    IN email VARCHAR(100),
+    IN course_id INT
+)
+BEGIN
+    INSERT INTO student (student_id ,first_name, last_name, date_of_birth, email, course_id)
+    VALUES (student_id,first_name, last_name, date_of_birth, email, course_id);
+END;
+CREATE PROCEDURE insert_student(
+   IN student_id INT, IN first_name VARCHAR(50),
+    IN last_name VARCHAR(50),
+    IN date_of_birth DATE,
+    IN email VARCHAR(100),
+    IN course_id INT
+)
+BEGIN
+    INSERT INTO student (student_id ,first_name, last_name, date_of_birth, email, course_id)
+    VALUES (student_id,first_name, last_name, date_of_birth, email, course_id)
+END;
+CREATE OR REPLACE PROCEDURE insert_student(
+    first_name_param VARCHAR(50),
+    last_name_param VARCHAR(50),
+    date_of_birth_param DATE,
+    email_param VARCHAR(100),
+    course_id_param INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO student (first_name, last_name, date_of_birth, email, course_id)
+    VALUES (first_name_param, last_name_param, date_of_birth_param, email_param, course_id_param);
+END;
+$$;
+CALL insert_student('Gouthum', 'Gambir', '2000-05-10', 'john.doe@example.com', 101);
+CALL insert_student('Gouthum', 'Gambir', '2000-05-10', 'goutum@example.com', 101);
+CREATE OR REPLACE PROCEDURE insert_student(studentid INT,
+    first_name_param VARCHAR(50),
+    last_name_param VARCHAR(50),
+    date_of_birth_param DATE,
+    email_param VARCHAR(100),
+    course_id_param INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO student (student_id,first_name, last_name, date_of_birth, email, course_id)
+    VALUES (studentid,first_name_param, last_name_param, date_of_birth_param, email_param, course_id_param);
+END;
+$$;
+CALL insert_student(11,'Gouthum', 'Gambir', '2000-05-10', 'goutum@example.com', 101);
+select * from student;
+create or replace function fnswap(inout fname varchar,inout lname varchar )
+as
+$$
+begin
+   select fname,lname into lname,fname;
+end;
+$$
+language plpgsql;
+select * from fnswap('hello','world');
 \s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
