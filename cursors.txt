@@ -1,0 +1,52 @@
+>>>>>>>>>>>>Cursor<<<<<<<<<<<<
+cursor is a database object that allows you to retrieve, manipulate, and traverse query result sets row-by-row. 
+Cursors are especially useful when you need to process large sets of data incrementally, 
+as they help manage memory usage and can improve performance by not loading the entire result set into memory at once.
+
+>>>>Types of Cursors<<<<<<<
+
+** Implicit Cursors: Automatically created by PostgreSQL when a SQL statement is executed. 
+                     They are used internally and are not visible to the user.
+
+** Explicit Cursors: Defined and controlled by the user, providing more control over the query execution and result set processing.
+                     Characteristics of Cursors
+
+** Temporary: Cursors exist only during the duration of a database session or until explicitly closed.
+
+** Row-by-Row Processing: Cursors fetch and process query results one row at a time.
+
+** Controlled Access: Cursors allow controlled fetching of rows, which can optimize memory usage and performance.
+
+>>>>>>Cursor Lifecycle<<<<<<<
+* Declare a Cursor: Define the cursor with a SQL query.
+* Open the Cursor: Initialize the cursor and prepare the query result set.
+* Fetch Data: Retrieve rows from the cursor one at a time or in blocks.
+* Close the Cursor: Release the cursor and its resources.
+
+
+Syntax for Using Cursors
+
+
+DO $$
+DECLARE
+    marks_cursor CURSOR FOR 
+    SELECT student_id, marks FROM marks;
+
+    mark_record RECORD; 
+    total_marks INT := 0;
+
+BEGIN
+    OPEN marks_cursor;
+
+    LOOP
+        FETCH marks_cursor INTO mark_record;
+
+        EXIT WHEN NOT FOUND; 
+
+        total_marks := total_marks + mark_record.marks;
+        RAISE NOTICE 'Student ID: %, Marks: %, Total Marks: %', mark_record.student_id, mark_record.marks, total_marks;
+    END LOOP;
+
+    CLOSE marks_cursor;
+    RAISE NOTICE 'Final Total Marks: %', total_marks;
+END $$;

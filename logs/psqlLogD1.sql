@@ -1029,4 +1029,211 @@ end;
 $$
 language plpgsql;
 select * from fnswap('hello','world');
+select  * from student
+;
+select  * from student;
+DO $$
+Declare
+BEGIN
+     DECLARE;$$
+;
+DO $$
+Declare
+BEGIN
+     DECLARE
+DO $$
+Declare
+BEGIN
+     DECLARE;$$
+;
+DO $$
+Declare
+BEGIN
+     DECLARE
+DO $$
+Declare datarow RECORD; count int:=0;
+BEGIN
+     DECLARE
+myfirstcursor Cursor for
+select * from student;
+BEGIN
+   OPEN myfirstcursor;
+   LOOP
+      FETCH myfirstcursor into datarow;
+      count=count+1;
+      EXIT WHEN NOT found;
+   END LOOP;
+   CLOSE myfirstcursor;
+   END;
+END; $$
+;
+DO $$
+Declare
+BEGIN
+     DECLARE
+DO $$
+Declare datarow RECORD; count int:=0;
+BEGIN
+     DECLARE
+myfirstcursor Cursor for
+select * from student;
+BEGIN
+   OPEN myfirstcursor;
+   LOOP
+      FETCH myfirstcursor into datarow;
+      count=count+1;
+      EXIT WHEN NOT found;
+   END LOOP; myfirstcursor;
+   END;
+END; $$
+;
+DO $$
+Declare
+BEGIN
+     DECLARE
+DO $$
+Declare datarow RECORD; count int:=0;
+BEGIN
+     DECLARE
+myfirstcursor Cursor for
+select * from student;
+BEGIN
+   OPEN myfirstcursor;
+   LOOP
+      FETCH myfirstcursor into datarow;
+      count=count+1;
+      EXIT WHEN NOT found;
+   END LOOP;CLOSE myfirstcursor;END; END; $$
+END; $$
+;
+;
+DO $$
+Declare datarow RECORD; count int:=0;
+BEGIN
+     DECLARE
+myfirstcursor Cursor for
+select * from student;
+BEGIN
+   OPEN myfirstcursor;
+   LOOP
+      FETCH myfirstcursor into datarow;
+      count=count+1;
+      EXIT WHEN NOT found;
+   END LOOP;CLOSE myfirstcursor;END; END; $$
+$$
+;
+CLEAR
+;
+DO $$             
+Declare datarow RECORD; count int:=0;
+BEGIN                                
+     DECLARE                         
+myfirstcursor Cursor for             
+select * from student;
+BEGIN                 
+   OPEN myfirstcursor;
+   LOOP               
+      FETCH myfirstcursor into datarow;
+      count=count+1;
+      EXIT WHEN NOT found;
+   END LOOP;CLOSE myfirstcursor;END; END; $$
+
+;
+DO $$             
+Declare datarow RECORD; count int:=0;
+BEGIN                                
+     DECLARE                         
+myfirstcursor Cursor for             
+select * from student;
+BEGIN                 
+   OPEN myfirstcursor;
+   LOOP               
+      FETCH myfirstcursor into datarow;
+      count=count+1;
+      EXIT WHEN NOT found;RAISE NOTICE 'This is cursor loop Number:- %',count;
+      RAISE NOTICE 'student value is:-%',datarow.first_name   END LOOP;CLOSE myfirstcursor;END; END; $$
+
+;
+DO $$             
+Declare datarow RECORD; count int:=0;
+BEGIN                                
+     DECLARE                         
+myfirstcursor Cursor for             
+select * from student;
+BEGIN                 
+   OPEN myfirstcursor;
+   LOOP               
+      FETCH myfirstcursor into datarow;
+      count=count+1;
+      EXIT WHEN NOT found;RAISE NOTICE 'This is cursor loop Number:- %',count;
+      RAISE NOTICE 'student value is:-%',datarow.first_name;   END LOOP;CLOSE myfirstcursor;END; END; $$
+
+;
+
+DO $$ 
+DECLARE
+    student_cursor CURSOR FOR 
+    SELECT student_id, first_name, last_name FROM student;
+
+    student_record RECORD;  
+
+BEGIN
+ 
+    OPEN student_cursor;
+
+    LOOP
+        FETCH student_cursor INTO student_record;
+
+        EXIT WHEN NOT FOUND; 
+
+        RAISE NOTICE 'ID: %, Name: % %', student_record.student_id, student_record.first_name, student_record.last_name;
+    END LOOP;
+
+    CLOSE student_cursor;
+END $$;
+
+DO $$ 
+DECLARE
+    student_cursor CURSOR FOR 
+    SELECT student_id, first_name, last_name FROM student;
+
+    student_record RECORD;  
+
+BEGIN
+ 
+    OPEN student_cursor;
+
+    LOOP
+        FETCH student_cursor INTO student_record;
+
+        EXIT WHEN NOT FOUND; 
+
+        RAISE NOTICE 'ID: %, Name: % %', student_record.student_id, student_record.first_name, student_record.last_name;
+    END LOOP;
+
+    CLOSE student_cursor;
+END $$;
+DO $$
+DECLARE
+    marks_cursor CURSOR FOR 
+    SELECT student_id, marks FROM marks;
+
+    mark_record RECORD; 
+    total_marks INT := 0;
+
+BEGIN
+    OPEN marks_cursor;
+
+    LOOP
+        FETCH marks_cursor INTO mark_record;
+
+        EXIT WHEN NOT FOUND; 
+
+        total_marks := total_marks + mark_record.marks;
+        RAISE NOTICE 'Student ID: %, Marks: %, Total Marks: %', mark_record.student_id, mark_record.marks, total_marks;
+    END LOOP;
+
+    CLOSE marks_cursor;
+    RAISE NOTICE 'Final Total Marks: %', total_marks;
+END $$;
 \s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
