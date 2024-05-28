@@ -1,0 +1,33 @@
+INNER JOIN: Returns rows when there is at least one match in both tables.
+---->
+SELECT student.student_id, student.first_name, student.last_name, course.course_name
+FROM student
+INNER JOIN course ON student.course_id = course.course_id;
+
+
+LEFT JOIN (or LEFT OUTER JOIN): Returns all rows from the left table (student), and the matched rows from the right table (course). The result is NULL from the right side if there is no match.
+--->
+SELECT student.student_id, student.first_name, student.last_name, course.course_name
+FROM student
+LEFT JOIN course ON student.course_id = course.course_id;
+
+
+RIGHT JOIN (or RIGHT OUTER JOIN): Returns all rows from the right table (course), and the matched rows from the left table (student). The result is NULL from the left side when there is no match.
+-------->
+SELECT student.student_id, student.first_name, student.last_name, course.course_name
+FROM student
+RIGHT JOIN course ON student.course_id = course.course_id;
+
+
+FULL JOIN (or FULL OUTER JOIN): Returns rows when there is a match in one of the tables. It essentially combines the results of both LEFT JOIN and RIGHT JOIN.
+----->
+SELECT student.student_id, student.first_name, student.last_name, course.course_name
+FROM student
+FULL JOIN course ON student.course_id = course.course_id;
+
+
+CROSS JOIN: Returns the Cartesian product of the two tables, i.e., all possible combinations of rows.
+------>
+SELECT student.student_id, student.first_name, student.last_name, course.course_name
+FROM student
+CROSS JOIN course;
