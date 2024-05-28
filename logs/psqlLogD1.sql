@@ -1283,3 +1283,9 @@ select * from student_backup;
 rollback
 ;
 \s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
+begin;
+INSERT INTO student (first_name, last_name, date_of_birth, email, course_id)
+VALUES (11,'Gouthum', 'Johnson', '1995-04-12', 'alice.gouthum@example.com', 102);
+INSERT INTO student (student_id,first_name, last_name, date_of_birth, email, course_id)
+VALUES (11,'Gouthum', 'Johnson', '1995-04-12', 'alice.gouthum@example.com', 102);
+\s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql

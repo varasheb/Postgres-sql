@@ -123,4 +123,4 @@ WHERE student_id = ANY (SELECT student_id FROM marks WHERE marks >= 50);
 SELECT * FROM student
 WHERE student_id = ALL (SELECT student_id FROM marks WHERE marks > 80);
 
-================================================================
+==============================================================================

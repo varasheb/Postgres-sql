@@ -1,0 +1,58 @@
+>>>>>>>>>>>>>>>>Transaction Control Language (TCL)<<<<<<<<<<<<<<<<<<<
+
+Transaction Control Language (TCL) in SQL is used to manage transactions in a database. 
+It allows you to control and ensure the integrity of the data within transactions. 
+
+The main TCL commands are:
+
+BEGIN (or START TRANSACTION):
+Starts a new transaction.
+
+BEGIN;
+-- or
+START TRANSACTION;
+
+
+COMMIT:
+Saves all the changes made during the current transaction.
+COMMIT;
+
+
+ROLLBACK:
+Undoes all the changes made during the current transaction, reverting the database to its previous state.
+ROLLBACK;
+
+
+SAVEPOINT:
+Sets a point within a transaction to which you can later roll back.
+SAVEPOINT savepoint_name;
+
+
+ROLLBACK TO SAVEPOINT:
+Rolls back the transaction to the specified savepoint.
+ROLLBACK TO SAVEPOINT savepoint_name;
+
+
+RELEASE SAVEPOINT:
+Removes a savepoint, making it no longer available for rollback.
+RELEASE SAVEPOINT savepoint_name;
+
+Example 
+
+-- Start a transaction
+BEGIN;
+
+INSERT INTO student (first_name, last_name, date_of_birth, email, course_id)
+VALUES ('Alice', 'Johnson', '1995-04-12', 'alice.johnson@example.com', 102);
+
+UPDATE student
+SET email = 'updated.email@example.com'
+WHERE student_id = 3;
+
+SAVEPOINT before_delete;
+
+DELETE FROM student WHERE student_id = 5;
+
+ROLLBACK TO SAVEPOINT before_delete;
+
+COMMIT;
