@@ -1,0 +1,51 @@
+>>>>>>>>>>>>>Triggers<<<<<<<<<<<<<<<<<
+Triggers are special types of stored procedures that automatically execute or "fire" when certain events occur in the database. 
+Triggers can be defined to execute before or after an INSERT, UPDATE, or DELETE operation on a table.
+
+** Event: The action that causes the trigger to fire (INSERT, UPDATE, DELETE).
+** Timing: When the trigger fires (BEFORE or AFTER the event).
+** Condition: Optional criteria that determine whether the trigger should fire.
+** Action: The operations performed by the trigger.
+
+
+****Syntax
+
+CREATE TRIGGER trigger_name
+[BEFORE|AFTER|INSTEAD OF] [INSERT|UPDATE|DELETE|TRUNCATE]
+ON table_name
+[FOR EACH ROW|FOR EACH STATEMENT]
+[WHEN (condition)]
+EXECUTE FUNCTION function_name();
+
+----------------------------------------------------------------------------------------
+======Create the Backup Table============
+
+CREATE TABLE student_backup (
+    backup_id SERIAL PRIMARY KEY,
+    student_id INT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    date_of_birth DATE, 
+    email VARCHAR(100), 
+    course_id INT,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+=======Create the Trigger Function============
+
+CREATE OR REPLACE FUNCTION backup_deleted_student()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO student_backup (student_id, first_name, last_name, date_of_birth, email, course_id) 
+    VALUES (OLD.student_id, OLD.first_name, OLD.last_name, OLD.date_of_birth, OLD.email, OLD.course_id);
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+
+========Attach the Trigger to the student Table=============
+
+CREATE TRIGGER backup_deleted_student_trigger
+AFTER DELETE ON student
+FOR EACH ROW
+EXECUTE FUNCTION backup_deleted_student();

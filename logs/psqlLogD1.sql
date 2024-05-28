@@ -1237,3 +1237,49 @@ BEGIN
     RAISE NOTICE 'Final Total Marks: %', total_marks;
 END $$;
 \s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
+old
+;
+select old;
+select old.first_name from student;
+CREATE TABLE student_backup (
+    backup_id SERIAL PRIMARY KEY
+    student_id INT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    date_of_birth DATE, 
+    email VARCHAR(100), 
+    course_id INT,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE student_backup (
+    backup_id SERIAL PRIMARY KEY,
+    student_id INT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    date_of_birth DATE, 
+    email VARCHAR(100), 
+    course_id INT,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE OR REPLACE FUNCTION backup_deleted_student()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO student_backup (student_id, first_name, last_name, date_of_birth, email, course_id) 
+    VALUES (OLD.student_id, OLD.first_name, OLD.last_name, OLD.date_of_birth, OLD.email, OLD.course_id);
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER backup_deleted_student_trigger
+AFTER DELETE ON student
+FOR EACH ROW
+EXECUTE FUNCTION backup_deleted_student();
+select * from students
+;
+select * from student
+;
+DELETE FROM student WHERE student_id = 1;
+DELETE FROM student WHERE student_id = 11;
+select * from student_backup;
+rollback
+;
+\s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
