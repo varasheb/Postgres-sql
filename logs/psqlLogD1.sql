@@ -1373,7 +1373,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 UPDATE_STUDENT_EMAIL(5, 'hkeme4@hotmail.com');  -- Update email for student ID 5
-
 CREATE OR REPLACE PROCEDURE update_student_email(
   IN student_id INTEGER,
   IN new_email TEXT
@@ -1399,7 +1398,6 @@ $$ LANGUAGE plpgsql;
 update_student_email(5, 'hkeme4@hotmail.com'); 
 drop procedure update_student_email(int,varchar);
 \df
-
 \df
 CREATE OR REPLACE PROCEDURE update_student_email(
   IN student_id INT,
@@ -1415,4 +1413,36 @@ update_student_email(5, 'hkeme4@hotmail.com');
 call update_student_email(5, 'hkeme4@hotmail.com'); 
 \d student
 select * from student;
+\s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
+CREATE INDEX idx_student_email ON student(email);
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+\timing
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+DROP INDEX idx_student_email;
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+CREATE UNIQUE INDEX idx_student_email_unique ON student(email);
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+DROP INDEX idx_student_email_unique;
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+SELECT * FROM student WHERE email = 'virat@gmail.com';
+\df
+SELECT * FROM student order by email asc;
+CREATE INDEX idx_student_email_asc ON student(email ASC);
+SELECT * FROM student order by email asc;
+SELECT * FROM student order by email asc;
+SELECT indexname, indexdef
+FROM pg_indexes
+WHERE tablename = 'student';
 \s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql

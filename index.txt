@@ -1,0 +1,13 @@
+>>>>> Index <<<<<<<<<<
+
+An index in a database is a data structure that improves the speed of data retrieval operations on a table at the cost
+of additional storage space and maintenance overhead. Indexes are used to quickly locate and access the data in a
+database table without having to scan every row.
+----------syntax---------
+CREATE [UNIQUE] INDEX index_name
+ON table_name (column_name [ASC|DESC] [, ...])
+
+----------------------------------
+Examples
+
+CREATE INDEX idx_student_email ON student(email);
