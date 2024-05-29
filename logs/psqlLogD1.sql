@@ -1288,4 +1288,131 @@ INSERT INTO student (first_name, last_name, date_of_birth, email, course_id)
 VALUES (11,'Gouthum', 'Johnson', '1995-04-12', 'alice.gouthum@example.com', 102);
 INSERT INTO student (student_id,first_name, last_name, date_of_birth, email, course_id)
 VALUES (11,'Gouthum', 'Johnson', '1995-04-12', 'alice.gouthum@example.com', 102);
+do $$
+begin
+select * from emp;
+exception
+ when other then
+   raise Notice 'Table not found';
+end $$;
+do $$
+begin
+select * from emp;
+exception
+ when others then
+   raise Notice 'Table not found';
+end $$;
+select * from emp;
+DO $$
+BEGIN
+    RAISE NOTICE 'Starting division operation';
+    PERFORM 1 / 0;  
+EXCEPTION
+    WHEN division_by_zero THEN
+        RAISE NOTICE 'Division by zero exception occurred';
+END $$;
+perfotm 1/0;
+select 1/0;
+insert into marks(student_id) values (1);
+insert into marks(marks_id,student_id,couese_id) values (1,1,102);
+insert into marks(mark_id,student_id,couese_id) values (1,1,102);
+insert into marks(mark_id,student_id,course_id) values (1,1,102);
+DO $$
+BEGIN
+    RAISE NOTICE 'Starting division operation';
+    PERFORM 1 / 0;  -- Division by zero
+EXCEPTION
+    WHEN division_by_zero THEN
+        RAISE NOTICE 'Division by zero exception occurred';
+END $$;
+DO $$
+BEGIN
+    INSERT INTO student (student_id, first_name, last_name, email, course_id) 
+    VALUES (1, 'Alice', 'Johnson', 'alice.johnson@example.com', 101);
+EXCEPTION
+    WHEN unique_violation THEN
+        RAISE NOTICE 'Student with ID 1 already exists';
+END $$;
+\s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql
+CREATE OR REPLACE FUNCTION get_grade(marks INTEGER)
+RETURNS TEXT AS $$
+BEGIN
+  IF marks >= 90 THEN
+    RETURN 'A';
+  ELSIF marks >= 80 THEN
+    RETURN 'B';
+  ELSIF marks >= 70 THEN
+    RETURN 'C';
+  ELSIF marks >= 60 THEN
+    RETURN 'D';
+  ELSE
+    RETURN 'F';
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+select get_grade(89);
+select get_grade(23);
+select get_grade(0);
+select get_grade(40);
+select get_grade(50);
+select get_grade(60);
+select get_grade(70);
+select get_grade(800);
+select get_grade(80);
+SELECT first_name, last_name, marks, get_grade(marks) AS letter_grade
+FROM student s
+INNER JOIN marks m ON s.student_id = m.student_id;
+CREATE OR REPLACE PROCEDURE update_student_email(
+  IN student_id INTEGER,
+  IN new_email TEXT
+) AS $$
+BEGIN
+  UPDATE student
+  SET email = new_email
+  WHERE student_id = student_id;
+END;
+$$ LANGUAGE plpgsql;
+UPDATE_STUDENT_EMAIL(5, 'hkeme4@hotmail.com');  -- Update email for student ID 5
+
+CREATE OR REPLACE PROCEDURE update_student_email(
+  IN student_id INTEGER,
+  IN new_email TEXT
+) AS $$
+BEGIN
+  UPDATE student
+  SET email = new_email
+  WHERE student.student_id = update_student_email.student_id;
+END;
+$$ LANGUAGE plpgsql;
+UPDATE_STUDENT_EMAIL(5, 'hkeme4@hotmail.com'); 
+update_student_email(5, 'hkeme4@hotmail.com'); 
+CREATE OR REPLACE PROCEDURE update_student_email(
+  IN student_id INT,
+  IN new_email varchar(100)
+) AS $$
+BEGIN
+  UPDATE student
+  SET email = new_email
+  WHERE student.student_id = update_student_email.student_id;
+END;
+$$ LANGUAGE plpgsql;
+update_student_email(5, 'hkeme4@hotmail.com'); 
+drop procedure update_student_email(int,varchar);
+\df
+
+\df
+CREATE OR REPLACE PROCEDURE update_student_email(
+  IN student_id INT,
+  IN new_email varchar(100)
+) AS $$
+BEGIN
+  UPDATE student
+  SET email = new_email
+  WHERE student.student_id = update_student_email.student_id;
+END;
+$$ LANGUAGE plpgsql;
+update_student_email(5, 'hkeme4@hotmail.com'); 
+call update_student_email(5, 'hkeme4@hotmail.com'); 
+\d student
+select * from student;
 \s /home/lucky/BridgeLabz-jsbasic/Postgres/logs/psqlLogD1.sql

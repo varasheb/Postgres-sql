@@ -1,0 +1,95 @@
+>>>>>>>>>>>>>Errors in psql<<<<<<<<<<<<<<<<<
+
+Syntax Errors: These occur when the SQL statement is not correctly formed.
+
+
+SELECT * FROM student
+WHERE student_id = 1  -- Missing semicolon
+
+Error message:
+ERROR:  syntax error at or near "WHERE"
+LINE 2: WHERE student_id = 1
+--------------------------------------------------------------------------------------
+
+Constraint Violations: These occur when a constraint defined on the table is violated.
+
+
+INSERT INTO student (student_id, first_name, last_name, date_of_birth, email, course_id) 
+VALUES (11, 'Alice', 'Johnson', '2002-07-21', 'alice.johnson@example.com', 200);  -- Assuming course_id 200 does not exist 
+
+Error message:
+ERROR:  insert or update on table "student" violates foreign key constraint "student_course_id_fkey"
+DETAIL:  Key (course_id)=(200) is not present in table "course".
+
+----------------------------------------------------------------------------------------
+Database Connection Issues: These occur when there is a problem connecting to the database.
+
+psql -U username -d dbname -h localhost  -- Incorrect host
+
+Error message:
+psql: could not connect to server: Connection refused
+Is the server running on host "localhost" (::1) and accepting
+TCP/IP connections on port 5432?
+
+
+-------------------------------------------------------------------------------------------
+>>>>>>>>>>> EXCEPTION<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+exceptions are used to handle errors that occur during the execution of SQL statements. 
+
+
+** 1. Division By Zero (divisible_by_zero)
+This exception occurs when attempting to divide a number by zero, which is mathematically undefined.
+
+** 2. Unique Violation (unique_violation)
+Meaning: This exception occurs when trying to insert or update a record with a value that violates a unique constraint.
+
+** 3. Other Exceptions (others)
+Meaning: This catch-all exception is used to handle any other type of exception that is not explicitly caught by specific handlers.
+
+
+>>>>>>>>>>>Syntax for Exception Handling<<<<<<<<<<<<<<<<<
+DO $$
+BEGIN
+    -- SQL statements that may raise exceptions
+EXCEPTION
+    WHEN division_by_zero THEN
+        -- Handle division by zero exception
+    WHEN unique_violation THEN
+        -- Handle unique violation exception
+    WHEN others THEN
+        -- Handle all other exceptions
+END $$;
+-----------------------------------------------
+DO $$
+BEGIN
+    -- Some SQL statements that may raise exceptions
+EXCEPTION
+    WHEN division_by_zero THEN
+        RAISE NOTICE 'Division by zero';
+    WHEN unique_violation THEN
+        RAISE NOTICE 'Unique violation';
+    WHEN others THEN
+        RAISE NOTICE 'Other exception';
+END $$;
+
+-------------------------------------------------
+>>>>>>>>>>>Handling Division by Zero Exception<<<<<<<<<<<<
+DO $$
+BEGIN
+    RAISE NOTICE 'Starting division operation';
+    PERFORM 1 / 0;  -- Division by zero
+EXCEPTION
+    WHEN division_by_zero THEN
+        RAISE NOTICE 'Division by zero exception occurred';
+END $$;
+
+>>>>>>>>>>>Handling Unique Violation Exception<<<<<<<<<<<<<<<
+DO $$
+BEGIN
+    INSERT INTO student (student_id, first_name, last_name, email, course_id) 
+    VALUES (1, 'Alice', 'Johnson', 'alice.johnson@example.com', 101);
+EXCEPTION
+    WHEN unique_violation THEN
+        RAISE NOTICE 'Student with ID 1 already exists';
+END $$;
+
